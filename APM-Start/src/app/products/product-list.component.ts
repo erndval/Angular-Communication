@@ -3,11 +3,14 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
-  ElementRef
+  ElementRef,
+  ViewChildren,
+  QueryList
 } from "@angular/core";
 
 import { IProduct } from "./product";
 import { ProductService } from "./product.service";
+import { NgModel } from "@angular/forms";
 
 @Component({
   templateUrl: "./product-list.component.html",
@@ -16,21 +19,13 @@ import { ProductService } from "./product.service";
 export class ProductListComponent implements OnInit, AfterViewInit {
   pageTitle: string = "Product List";
   showImage: boolean;
-
+  listFilter: string;
   imageWidth: number = 50;
   imageMargin: number = 2;
   errorMessage: string;
 
   @ViewChild("filterElement") filterElementRef: ElementRef;
-
-  private _listFilter: string;
-  public get listFilter(): string {
-    return this._listFilter;
-  }
-  public set listFilter(value: string) {
-    this._listFilter = value;
-    this.performFilter(this.listFilter);
-  }
+  @ViewChild(NgModel) filterInput: NgModel;
 
   filteredProducts: IProduct[];
   products: IProduct[];
@@ -48,6 +43,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.filterInput.valueChanges.subscribe(() =>
+      this.performFilter(this.listFilter)
+    );
     this.filterElementRef.nativeElement.focus();
   }
 
