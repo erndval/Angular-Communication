@@ -4,6 +4,7 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
+  Input,
 } from "@angular/core";
 
 @Component({
@@ -13,6 +14,8 @@ import {
 })
 export class CriteriaComponent implements OnInit, AfterViewInit {
   listFilter: string;
+  @Input() displayDetail: boolean;
+
   @ViewChild("filterElement") filterElementRef: ElementRef;
 
   constructor() {}
